@@ -8,7 +8,19 @@ from spack.main import SpackCommand
 
 python = SpackCommand('python')
 
+test_string = "Ran the spack python module"
+
 
 def test_python():
     out = python('-c', 'import spack; print(spack.spack_version)')
     assert out.strip() == spack.spack_version
+
+
+def test_python_with_module():
+    out = python('-m', 'site')
+    assert 'sys.path' in out.strip()
+
+
+def test_python_raises():
+    out = python('--foobar', fail_on_error=False)
+    assert "Error: Unknown arguments" in out
